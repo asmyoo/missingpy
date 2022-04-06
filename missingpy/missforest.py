@@ -392,12 +392,20 @@ class MissForest(BaseEstimator, TransformerMixin):
                     rf_classifier.fit(X=xobs, y=yobs)
                     # 7. predict ymis(s) using xmis(x)
                     ymis = rf_classifier.predict(xmis)
+                    ymis1 = rf_classifier.predict(xmis)
+                    if (ymis != ymis1).all():
+                        print("Bad iteration, class: ", self.iter_count_)
+                        print("What: %.20f, %.20f" % (ymis, ymis1))
                     # 8. update imputed matrix using predicted matrix ymis(s)
                     Ximp[mis_rows, s] = ymis
                 else:
                     rf_regressor.fit(X=xobs, y=yobs)
                     # 7. predict ymis(s) using xmis(x)
                     ymis = rf_regressor.predict(xmis)
+                    ymis1 = rf_regressor.predict(xmis)
+                    if (ymis != ymis1).all():
+                        print("Bad iteration, regress: ", self.iter_count_)
+                        print("What: %.20f, %.20f" % (ymis, ymis1))
                     # 8. update imputed matrix using predicted matrix ymis(s)
                     Ximp[mis_rows, s] = ymis
 
